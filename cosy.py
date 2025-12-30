@@ -5,25 +5,21 @@ from PIL import Image
 import numpy as np
 import io
 
-# ========================================================================
-# !!! FINAL SOLUTION !!!
-# These values are confirmed by the model summary to resolve the 12544 error.
-# ========================================================================
-IMAGE_HEIGHT = 64  # <--- CORRECTED FIX
-IMAGE_WIDTH = 64   # <--- CORRECTED FIX
+
+IMAGE_HEIGHT = 64  
+IMAGE_WIDTH = 64  
 TARGET_CHANNELS = 3 
 
 
-# --- Streamlit Setup ---
 st.set_page_config(page_title="CellVision AI App", layout="centered")
 st.title(' Cell Vision AI Classifier')
 st.markdown("Upload a cell image to classify the cell type.")
 st.markdown("---")
 
 
-# --- 1. Efficient Model Loading (Using @st.cache_resource) ---
 
-@st.cache_resource
+
+st.cache_resource
 def load_vision_model():
     """Loads the CellVision_AI.h5 model once using caching."""
     with st.spinner("Loading AI model..."):
@@ -37,7 +33,7 @@ def load_vision_model():
 cell_vision_model = load_vision_model()
 
 
-# --- 2. Image Preprocessing Function ---
+
 
 def preprocess_image(uploaded_file):
     """
@@ -46,7 +42,7 @@ def preprocess_image(uploaded_file):
     """
     img = Image.open(uploaded_file).convert('RGB')
     
-    # Resizing now uses the CORRECTED (64x64) dimensions
+   
     img = img.resize((IMAGE_WIDTH, IMAGE_HEIGHT))
     
     img_array = np.array(img)
@@ -56,7 +52,7 @@ def preprocess_image(uploaded_file):
     return img_batch
 
 
-# --- 3. User Interface and Prediction Logic ---
+
 
 uploaded_file = st.file_uploader(
     "Upload a cell image (JPG or PNG) for analysis:", 
@@ -79,15 +75,14 @@ if uploaded_file is not None:
                 
                 input_tensor = preprocess_image(uploaded_file)
                 
-                # Make the prediction (This line caused the error, but should now work!)
+               
                 prediction = cell_vision_model.predict(input_tensor)[0]
                 
-                # --- Post-Processing and Display ---
+            
                 predicted_class_index = np.argmax(prediction)
                 confidence_score = prediction[predicted_class_index] * 100
                 
-                # IMPORTANT: Based on the model summary, your model is binary (2 classes).
-                # Replace these placeholder labels with your two actual cell types.
+          
                 class_labels = ["Type A Cell (e.g., Healthy)", "Type B Cell (e.g., Diseased)"] 
                 
                 predicted_label = class_labels[predicted_class_index]
@@ -100,3 +95,4 @@ if uploaded_file is not None:
         
         else:
             st.info("Upload an image and click 'Classify Cell' to begin the analysis.")
+
