@@ -52,7 +52,7 @@ and evaluation
 — NIH National Library of Medicine
 
 ## Live Demo
-[Link coming soon]
+[[Link coming soon](https://cell-visionai-9eapgqw9e3nkg4ezfwkxjp.streamlit.app/)]
 
 ## Disclaimer
 This tool is for educational and demonstration purposes only. It should 
